@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="IdareDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="DersTablo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Kredisi" Type="Double" Nullable="false" />
+    <Property Name="OkulYonetimId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="OkulYonetimTablo" Relationship="Self.FK_DersTablo_OkulYonetimTablo1" FromRole="DersTablo" ToRole="OkulYonetimTablo" />
+    <NavigationProperty Name="OgrenciDersTabloes" Relationship="Self.FK_OgrenciDersTablo_DersTablo1" FromRole="DersTablo" ToRole="OgrenciDersTablo" />
+  </EntityType>
+  <EntityType Name="OgrenciDersTablo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DersId" Type="Int32" Nullable="false" />
+    <Property Name="OgrenciId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="DersTablo" Relationship="Self.FK_OgrenciDersTablo_DersTablo1" FromRole="OgrenciDersTablo" ToRole="DersTablo" />
+    <NavigationProperty Name="OgrenciTablo" Relationship="Self.FK_OgrenciDersTablo_OgrenciTablo1" FromRole="OgrenciDersTablo" ToRole="OgrenciTablo" />
+  </EntityType>
+  <EntityType Name="OgrenciTablo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AdSoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="KayitTarih" Type="Int32" Nullable="false" />
+    <Property Name="OgrenciNo" Type="Int32" Nullable="false" />
+    <Property Name="DTarih" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Bolum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="OgrenciDersTabloes" Relationship="Self.FK_OgrenciDersTablo_OgrenciTablo1" FromRole="OgrenciTablo" ToRole="OgrenciDersTablo" />
+  </EntityType>
+  <EntityType Name="OkulYonetimTablo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AdSoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Gorevi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="YonetimTip" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="DersTabloes" Relationship="Self.FK_DersTablo_OkulYonetimTablo1" FromRole="OkulYonetimTablo" ToRole="DersTablo" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_DersTablo_OkulYonetimTablo1">
+    <End Role="OkulYonetimTablo" Type="Self.OkulYonetimTablo" Multiplicity="1" />
+    <End Role="DersTablo" Type="Self.DersTablo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OkulYonetimTablo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DersTablo">
+        <PropertyRef Name="OkulYonetimId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OgrenciDersTablo_DersTablo1">
+    <End Role="DersTablo" Type="Self.DersTablo" Multiplicity="1" />
+    <End Role="OgrenciDersTablo" Type="Self.OgrenciDersTablo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DersTablo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OgrenciDersTablo">
+        <PropertyRef Name="DersId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OgrenciDersTablo_OgrenciTablo1">
+    <End Role="OgrenciTablo" Type="Self.OgrenciTablo" Multiplicity="1" />
+    <End Role="OgrenciDersTablo" Type="Self.OgrenciDersTablo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OgrenciTablo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OgrenciDersTablo">
+        <PropertyRef Name="OgrenciId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="IdareDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="DersTabloes" EntityType="Self.DersTablo" />
+    <EntitySet Name="OgrenciDersTabloes" EntityType="Self.OgrenciDersTablo" />
+    <EntitySet Name="OgrenciTabloes" EntityType="Self.OgrenciTablo" />
+    <EntitySet Name="OkulYonetimTabloes" EntityType="Self.OkulYonetimTablo" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_DersTablo_OkulYonetimTablo1" Association="Self.FK_DersTablo_OkulYonetimTablo1">
+      <End Role="OkulYonetimTablo" EntitySet="OkulYonetimTabloes" />
+      <End Role="DersTablo" EntitySet="DersTabloes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OgrenciDersTablo_DersTablo1" Association="Self.FK_OgrenciDersTablo_DersTablo1">
+      <End Role="DersTablo" EntitySet="DersTabloes" />
+      <End Role="OgrenciDersTablo" EntitySet="OgrenciDersTabloes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OgrenciDersTablo_OgrenciTablo1" Association="Self.FK_OgrenciDersTablo_OgrenciTablo1">
+      <End Role="OgrenciTablo" EntitySet="OgrenciTabloes" />
+      <End Role="OgrenciDersTablo" EntitySet="OgrenciDersTabloes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
